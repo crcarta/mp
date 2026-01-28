@@ -8,6 +8,9 @@
 #include<QWidget>
 #include<QPushButton>
 #include<QVBoxLayout>
+#include<QHBoxLayout>
+#include<QTreeView>
+#include<QFileSystemModel>
 #include<QFileDialog>
 #include<QDir>
 #include<QDebug>
@@ -19,22 +22,34 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     libvlc_instance_t *vlc = libvlc_new(0, nullptr);
     libvlc_media_player_t *player = libvlc_media_player_new(vlc);
-    
+        
     QString musicfolder;
     QString currentsong;
 
     QWidget window;
-    window.setWindowTitle("mp Music Player");
+    window.setWindowTitle("mp");
     
     QPushButton pickFolderButton("Explore Folders");
     QPushButton pickButton("Pick Song");
     QPushButton playButton("Play Song");
 
+    QFileSystemModel *model = new QFileSystemModel;
+    model->setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+    model->setRootPath(QDir::homePath());
+    QTreeView *libraryView = new QTreeView;
+    libraryView->setModel(model);
+    libraryView->setRootIndex(model->index(QDir::homePath()));
+    libraryView->setHeaderHidden(true);
 
-    QVBoxLayout layout(&window);
-    layout.addWidget(&pickFolderButton);
-    layout.addWidget(&pickButton);
-    layout.addWidget(&playButton);
+    QVBoxLayout *buttonLayout = new QVBoxLayout;
+    buttonLayout->addWidget(&pickFolderButton);
+    buttonLayout->addWidget(&pickButton);
+    buttonLayout->addWidget(&playButton);
+    buttonLayout->addStretch();
+
+    QHBoxLayout *mainLayout = new QHBoxLayout(&window);
+    mainLayout->addLayout(buttonLayout);
+    mainLayout->addWidget(libraryView);
     
     QObject::connect(&pickFolderButton, &QPushButton::clicked, [&](){
             musicfolder = QFileDialog::getExistingDirectory(
@@ -42,8 +57,10 @@ int main(int argc, char *argv[])
                     "Select Music Folder",
                     QDir::homePath()
             );
-            if (!musicfolder.isEmpty())
+            if (!musicfolder.isEmpty()){
                 qDebug() << "Music folder: " << musicfolder;
+                libraryView->setRootIndex(model->index(musicfolder));
+            }
     });
 
     QObject::connect(&pickButton, &QPushButton::clicked, [&]() {
@@ -74,12 +91,6 @@ int main(int argc, char *argv[])
     window.show();
     int ret = app.exec();
 
-    QPushButton button("Open Explorer");
-    QObject::connect(&button, &QPushButton::clicked, []() {
-            QFileDialog::getExistingDirectory(
-                    nullptr, "Select Folder", QDir::homePath());
-    });
-    button.show();
     libvlc_media_player_stop(player);
     libvlc_media_player_release(player);
     libvlc_release(vlc);
