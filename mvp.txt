@@ -1,5 +1,13 @@
 file explorer, for finding music folder
 play a song
-
-
 pause/play implemented
+
+
+
+Add queue
+add better file explorer
+file explorer invis until dir chosen
+remove pick song button
+double click now adds songs to queue
+queue auto plays if first song
+Remember last set music folder dir

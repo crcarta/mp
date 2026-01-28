@@ -1,4 +1,4 @@
-Music Player made with C++, Qt, libvlc.
+Music Player made with C++, Qt, libVLC.
 
 Motivation
 
@@ -11,4 +11,3 @@ Very early development.
 Goal
 
 To create a local-first minimal music library for Linux.
-
