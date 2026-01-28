@@ -1,0 +1,5 @@
+file explorer, for finding music folder
+play a song
+
+
+pause/play implemented
