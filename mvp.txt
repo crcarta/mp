@@ -11,3 +11,8 @@ remove pick song button
 double click now adds songs to queue
 queue auto plays if first song
 Remember last set music folder dir
+
+
+compile: 
+g++ main.cpp -std=c++17 -fPIC $(pkg-config --cflags --libs Qt5Widgets) -lvlc
+
