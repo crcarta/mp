@@ -10,7 +10,8 @@ sudo dnf install -y \
   qt5-qtbase-devel \
   qt5-qttools-devel \
   vlc-devel \
-  taglib-devel
+  taglib-devel \
+  vlc
 
 echo "✅ All dependencies installed successfully!"
 echo
