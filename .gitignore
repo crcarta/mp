@@ -1,0 +1,17 @@
+# Executables
+bak.main.cpp
+a.out
+devlog.txt
+*.out
+*.exe
+
+# Object / intermediate files
+*.o
+*.obj
+
+# Backup & temporary files
+*.bak
+*~
+*.swp
+*.swo
+
