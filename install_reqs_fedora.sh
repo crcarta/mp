@@ -16,5 +16,4 @@ sudo dnf install -y \
 echo "✅ All dependencies installed successfully!"
 echo
 echo "You should now be able to compile with:"
-echo "g++ main.cpp -std=c++17 -fPIC \$(pkg-config --cflags --libs Qt5Widgets taglib) -lvlc"
-
+echo "g++ main.cpp -std=c++17 -fPIC $(pkg-config --cflags --libs Qt5Widgets) -lvlc -ltag"
