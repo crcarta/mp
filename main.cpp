@@ -250,8 +250,24 @@ int main(int argc, char *argv[]) {
 
     QObject::connect(queueView, &QListWidget::itemDoubleClicked, [&](QListWidgetItem *item) {
         playIndex(queueView->row(item));
-    });
 
+    });
+    queueView->setContextMenuPolicy(Qt::CustomContextMenu);
+    
+    QObject::connect(queueView, &QListWidget::customContextMenuRequested, [&](const QPoint &pos) {
+        QListWidgetItem *item = queueView->itemAt(pos);
+        if (item) {
+            int row = queueView->row(item);
+            if (row == currentIndex) {
+                libvlc_media_player_stop(player);
+                currentIndex = -1;
+                albumArt->clear();
+                albumArt->setText("No Album Art");
+            }
+            else if (row < currentIndex) currentIndex--;
+            delete queueView->takeItem(row);
+        }
+    });
     bool isDragging = false;
     QObject::connect(progressBar, &QSlider::sliderPressed, [&]() { isDragging = true; });
     QObject::connect(progressBar, &QSlider::sliderReleased, [&]() {
@@ -267,7 +283,16 @@ int main(int argc, char *argv[]) {
         
         // NEW: Auto-advance queue logic
         if (libvlc_media_player_get_state(player) == libvlc_Ended) {
-            if (currentIndex + 1 < queueView->count()) playIndex(currentIndex + 1);
+            if (currentIndex >= 0 && currentIndex < queueView->count()){
+                delete queueView->takeItem(currentIndex);
+                if(currentIndex < queueView->count())
+                    playIndex(currentIndex);
+                else{
+                    currentIndex = -1;
+                    albumArt->clear();
+                    albumArt->setText("No Album Art");
+                }
+            }
             return;
         }
 
