@@ -12,5 +12,5 @@ Goal
 
 To create a local-first minimal music library for Linux.
 
-<img width="797" height="640" alt="Screenshot From 2026-02-02 15-33-31" src="https://github.com/user-attachments/assets/78557926-a9e9-4adb-8867-184606889c5a" />
 
+<img width="1020" height="632" alt="Screenshot From 2026-02-03 13-47-54" src="https://github.com/user-attachments/assets/94c9b760-f00c-453c-8a00-a41ef47596e7" />
